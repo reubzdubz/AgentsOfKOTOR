@@ -1,0 +1,6 @@
+model: ../models/Qwen3.5-0.8B-Q4_K_M.gguf
+port: 5001
+host: 0.0.0.0
+n_gpu_layers: 0
+ctx_size: 2048
+threads: 4

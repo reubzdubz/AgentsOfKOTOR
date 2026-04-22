@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  # HK-47 Agent (llama.cpp server)
+  agent1-hk47:
+    build: .
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./shared/models:/app/shared/models:ro
+      - ./agent1/logs:/app/agent1/logs
+    command: >
+      /app/shared/llama_cpp/build/bin/llama-server
+      -m /app/shared/models/Qwen3.5-0.8B-Q4_K_M.gguf
+      --port 5000
+      --host 0.0.0.0
+      --n-gpu-layers 0
+      --ctx-size 2048
+      --threads 4
+    environment:
+      - CUDA_VISIBLE_DEVICES=0  # Optional: GPU assignment
+
+  # Kreia Agent (llama.cpp server)
+  agent2-kreia:
+    build: .
+    ports:
+      - "5001:5001"
+    volumes:
+      - ./shared/models:/app/shared/models:ro
+      - ./agent2/logs:/app/agent2/logs
+    command: >
+      /app/shared/llama_cpp/build/bin/llama-server
+      -m /app/shared/models/Qwen3.5-0.8B-Q4_K_M.gguf
+      --port 5001
+      --host 0.0.0.0
+      --n-gpu-layers 0
+      --ctx-size 2048
+      --threads 4
+    depends_on:
+      - agent1-hk47
+
+  # CrewAI Orchestrator
+  orchestrator:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./shared/models:/app/shared/models:ro
+      - ./shared/logs:/app/shared/logs
+    command: python crew_ai/orchestrator.py
+    depends_on:
+      - agent1-hk47
+      - agent2-kreia
+    environment:
+      - HK47_ENDPOINT=http://agent1-hk47:5000
+      - KREIA_ENDPOINT=http://agent2-kreia:5001

@@ -1,0 +1,13 @@
+[project]
+name = "kotor-agents"
+version = "0.1.0"
+description = "Multi-Agent Llama.cpp with CrewAI - HK-47 and Kreia"
+requires-python = ">=3.10"
+dependencies = [
+    "crewai>=0.1.0",
+    "langchain-openai>=0.1.0",
+    "pyyaml>=6.0",
+]
+
+[tool.uv]
+# UV-specific settings (optional)
