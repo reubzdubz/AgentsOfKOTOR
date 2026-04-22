@@ -26,9 +26,16 @@ This project sets up two llama.cpp instances running Qwen3.5 0.8B models, person
 - `agent2/`: Kreia instance
 - `crew_ai/`: Orchestration logic
 - `shared/`: Common resources
+- `vision_classifier/`: Scripts for vision data collation and benchmarking
 
 ## Notes
 
 - Ensure ports 5000 and 5001 are free.
 - Adjust GPU layers and threads in run.sh as needed.
 - Logs are stored in each agent's logs/ directory.
+
+## To-do
+
+- Optimize vision data pipeline to collate gameplay footage and log game state into three categories: dialogue, combat and leveling up, which will have their own subagents
+- Compare and determine which approach is best to classify game state based on player view in terms of latency and accuracy
+- Finetune on scrapped dialogue data to instill character behavior (prompt engineering is rather out of character)
