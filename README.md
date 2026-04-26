@@ -38,4 +38,4 @@ This project sets up two llama.cpp instances running Qwen3.5 0.8B models, person
 
 - Optimize vision data pipeline to collate gameplay footage and log game state into three categories: dialogue, combat and leveling up, which will have their own subagents
 - Compare and determine which approach is best to classify game state based on player view in terms of latency and accuracy
-- Finetune on scrapped dialogue data to instill character behavior (prompt engineering is rather out of character)
+- Finetune on scrapped dialogue JSONs to instill character behavior (prompt engineering is rather limiting and not versatile_
