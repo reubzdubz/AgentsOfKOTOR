@@ -64,9 +64,8 @@ class LlamaCppVisionCosineBenchmark:
 
         resp = self.client.embeddings.create(
             model=self.model,
-            input=[
-                "Classify the state of the KOTOR UI in this image as one of: combat, narrative, or leveling."
-            ],
+            input=["Classify the state of the KOTOR UI in this image as one of: combat, narrative, or leveling.",
+            {"type": "image", "data": b64}],
             encoding_format="float",
         )
 
