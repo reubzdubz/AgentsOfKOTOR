@@ -1,13 +1,11 @@
 #!/usr/bin/env python3
 import argparse
 from pathlib import Path
-import json
 
 import cv2
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-import plotly.express as px
-import plotly.io as pio
 
 STATE_LABELS = ["combat", "narrative", "leveling"]
 IMAGE_EXTS = [".png", ".jpg", ".jpeg", ".bmp", ".webp"]
@@ -54,12 +52,15 @@ def edge_metrics(image_path: Path, low_thresh: int, high_thresh: int, blur_ksize
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Compute edge densities by class and scatter plot x/y edge density.")
+    parser = argparse.ArgumentParser(description="Compute edge densities by class and scatter plot x/y edge density with matplotlib.")
     parser.add_argument("--dataset", default="vision_system/datasets/kotor_ui_samples")
-    parser.add_argument("--output-dir", default="output/edge_density_scatter")
+    parser.add_argument("--output-dir", default="output/edge_density_scatter_matplotlib")
     parser.add_argument("--low-thresh", type=int, default=100)
     parser.add_argument("--high-thresh", type=int, default=200)
     parser.add_argument("--blur-ksize", type=int, default=3)
+    parser.add_argument("--figsize", type=float, nargs=2, default=[9, 7])
+    parser.add_argument("--alpha", type=float, default=0.75)
+    parser.add_argument("--point-size", type=float, default=28)
     args = parser.parse_args()
 
     dataset_dir = Path(args.dataset)
@@ -83,34 +84,36 @@ def main():
     summary_path = output_dir / "edge_density_summary.csv"
     summary.to_csv(summary_path)
 
-    fig = px.scatter(
-        df,
-        x="edge_density_x_mean",
-        y="edge_density_y_mean",
-        color="label",
-        hover_data=["path", "edge_density_global", "width", "height"],
-        title=f"Edge Density by Class (Canny {args.low_thresh}-{args.high_thresh})"
-    )
-    fig.update_traces(marker=dict(size=7, opacity=0.75), cliponaxis=False)
-    fig.update_xaxes(title_text="X edge dens")
-    fig.update_yaxes(title_text="Y edge dens")
-    fig.update_layout(
-        legend=dict(orientation='h', yanchor='bottom', y=1.05, xanchor='center', x=0.5),
-        title={
-            "text": f"Edge Density by Class (Canny {args.low_thresh}-{args.high_thresh})"
-                    f"<br><span style='font-size: 18px; font-weight: normal;'>"
-                    f"Source: local dataset | mean edge density per axis after optional blur={args.blur_ksize}</span>"
-        }
-    )
+    color_map = {
+        "combat": "tab:red",
+        "narrative": "tab:blue",
+        "leveling": "tab:green",
+    }
+
+    plt.figure(figsize=tuple(args.figsize))
+    for label in STATE_LABELS:
+        sub = df[df["label"] == label]
+        if len(sub) == 0:
+            continue
+        plt.scatter(
+            sub["edge_density_x_mean"],
+            sub["edge_density_y_mean"],
+            s=args.point_size,
+            alpha=args.alpha,
+            label=label,
+            c=color_map.get(label, None),
+        )
+
+    plt.title(f"Edge Density by Class (Canny {args.low_thresh}-{args.high_thresh})")
+    plt.xlabel("X edge density")
+    plt.ylabel("Y edge density")
+    plt.legend()
+    plt.grid(True, linestyle="--", alpha=0.35)
+    plt.tight_layout()
 
     chart_path = output_dir / "edge_density_scatter.png"
-    fig.write_image(str(chart_path))
-    meta = {
-        "caption": "Edge density scatter by class",
-        "description": "Scatter plot of per-image mean horizontal and vertical edge densities, colored by class label."
-    }
-    with open(str(chart_path) + ".meta.json", "w") as f:
-        json.dump(meta, f)
+    plt.savefig(chart_path, dpi=200)
+    plt.close()
 
     print(f"Wrote {csv_path}")
     print(f"Wrote {summary_path}")
