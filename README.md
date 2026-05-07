@@ -49,10 +49,12 @@ Total images: 474
 Overall accuracy: 87.97%
 Average embedding latency: 0.118s/image
 
-Per-state metrics:
-  combat     P=1.00 R=0.47 F1=0.64
-  narrative  P=0.76 R=1.00 F1=0.86
-  leveling   P=0.94 R=0.98 F1=0.96
+| Class | Precision | Recall | F1 Score |
+| :--- | :--- | :--- | :--- |
+| combat | 1.00 | 0.47 | 0.64 |
+| narrative | 0.76 | 1.00 | 0.86 |
+| leveling | 0.94 | 0.98 | 0.96 |
+
 
 Confusion matrix:
 labels: combat, narrative, leveling
@@ -67,10 +69,12 @@ Total images: 474
 Overall accuracy: 72.78%
 Average latency: 0.51s/image
 
-Per-state metrics:
-  combat     | P: 68.84% | R: 95.00% | F1: 79.83%
-  narrative  | P: 58.05% | R: 90.15% | F1: 70.62%
-  leveling   | P: 100.00% | R: 54.13% | F1: 70.24%
+| Class | Precision | Recall | F1 Score |
+| :--- | :--- | :--- | :--- |
+| combat | 0.6884 | 0.9500 | 0.7983 |
+| narrative | 0.5805 | 0.9015 | 0.7062 |
+| leveling | 1.0000 | 0.5413 | 0.7024 |
+
 
 
 ## To-do

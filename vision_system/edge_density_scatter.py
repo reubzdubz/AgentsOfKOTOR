@@ -37,15 +37,23 @@ def edge_metrics(image_path: Path, low_thresh: int, high_thresh: int, blur_ksize
     edges = cv2.Canny(gray, low_thresh, high_thresh)
 
     h, w = edges.shape
-    x_density = edges.sum(axis=0).astype(np.float32) / 255.0 / h
-    y_density = edges.sum(axis=1).astype(np.float32) / 255.0 / w
+    density = edges.sum().astype(np.float32) / 255.0 / (h * w)
+
+    bottom_right_corner = edges[3 * h // 4 :, w // 2 :]
+    bottom_right_density = bottom_right_corner.sum() / 255.0 / (h * w / 8)
+    top_right_corner = edges[: h // 4, w // 2 :]
+    top_right_density = top_right_corner.sum() / 255.0 / (h * w / 8)
+    bottom_left_corner = edges[3 * h // 4 :, : w // 2]
+    bottom_left_density = bottom_left_corner.sum() / 255.0 / (h * w / 8)
+    top_left_corner = edges[: h // 4, : w // 2]
+    top_left_density = top_left_corner.sum() / 255.0 / (h * w / 8)
+    centre_quadrant = edges[h // 4 : 3 * h // 4, w // 4 : 3 * w // 4]
+    centre_density = centre_quadrant.sum() / 255.0 / (h * w / 4)
 
     return {
-        "edge_density_x_mean": float(x_density.mean()),
-        "edge_density_y_mean": float(y_density.mean()),
-        "edge_density_x_std": float(x_density.std()),
-        "edge_density_y_std": float(y_density.std()),
-        "edge_density_global": float((edges > 0).mean()),
+        "edge_density_global": density,
+        "edge_density_corners": (bottom_right_density + top_right_density + bottom_left_density + top_left_density) / 4,
+        "edge_density_centre": centre_density,
         "width": int(w),
         "height": int(h),
     }
@@ -80,7 +88,7 @@ def main():
     csv_path = output_dir / "edge_density_metrics.csv"
     df.to_csv(csv_path, index=False)
 
-    summary = df.groupby("label")[["edge_density_x_mean", "edge_density_y_mean", "edge_density_global"]].agg(["mean", "std", "count"])
+    summary = df.groupby("label")[["edge_density_global", "edge_density_corners", "edge_density_centre"]].agg(["mean", "std", "count"])
     summary_path = output_dir / "edge_density_summary.csv"
     summary.to_csv(summary_path)
 
@@ -96,8 +104,8 @@ def main():
         if len(sub) == 0:
             continue
         plt.scatter(
-            sub["edge_density_x_mean"],
-            sub["edge_density_y_mean"],
+            sub["edge_density_corners"],
+            sub["edge_density_global"],
             s=args.point_size,
             alpha=args.alpha,
             label=label,
@@ -105,8 +113,8 @@ def main():
         )
 
     plt.title(f"Edge Density by Class (Canny {args.low_thresh}-{args.high_thresh})")
-    plt.xlabel("X edge density")
-    plt.ylabel("Y edge density")
+    plt.xlabel("edge_density_corners")
+    plt.ylabel("edge_density_global")
     plt.legend()
     plt.grid(True, linestyle="--", alpha=0.35)
     plt.tight_layout()
