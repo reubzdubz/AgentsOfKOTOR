@@ -36,7 +36,7 @@ This project sets up two llama.cpp instances running Qwen3.5 0.8B models, person
 
 ## Vision-based Game State Classifier
 
-Currently an experimental feature, I plan to use a routing system to direct the workflow to the relevant agent. I'm comparing the success rates of different approaches to classify the game state based on the UI view, as I do not have direct access to the video game's internal state.
+Currently an experimental feature, a routing system is used to direct the workflow to the relevant agent. Comparing the success rates of different approaches to classify the game state based on the UI view, as I do not have direct access to the video game's internal state.
 
 1. Edge detection + Feature Extraction + Classifier
 ** Have yet to fully test this**
@@ -55,12 +55,6 @@ Average embedding latency: 0.118s/image
 | narrative | 0.76 | 1.00 | 0.86 |
 | leveling | 0.94 | 0.98 | 0.96 |
 
-
-Confusion matrix:
-labels: combat, narrative, leveling
-[47, 38, 15]
-[0, 132, 0]
-[0, 4, 238]
 
 3. VLM-based classification
 Utilized Molmo2-4B for classification:
@@ -82,3 +76,4 @@ Average latency: 0.51s/image
 - Optimize vision data pipeline to collate gameplay footage and log game state into three categories: dialogue, combat and leveling up, which will have their own subagents
 - Compare and determine which approach is best to classify game state based on player view in terms of latency and accuracy
 - Finetune on scrapped dialogue JSONs to instill character behavior (prompt engineering is rather limiting and not versatile)
+- Integrate Elevenlabs TTS API for streaming of voice for LLM responses

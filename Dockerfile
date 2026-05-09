@@ -36,7 +36,17 @@ RUN uv venv /app/.venv && \
 ENV PATH="/app/.venv/bin:${PATH}"
 
 # Expose ports
+# Expose ports for both agents + FastAPI
 EXPOSE 5000 5001 8000
 
-# Default command
-CMD ["python", "crew_ai/orchestrator.py"]
+# Default command: run both llama.cpp servers and orchestrator
+# Expose ports for agents + FastAPI
+EXPOSE 5000 5001 8000
+
+# Default command: run both llama.cpp servers and FastAPI app
+CMD ./shared/llama_cpp/build/bin/server \
+      --model /app/models/Qwen3.5-0.8B.Q4_K_M.gguf --port 5000 --api & \
+    ./shared/llama_cpp/build/bin/server \
+      --model /app/models/Qwen3.5-0.8B.Q4_K_M.gguf --port 5001 --api & \
+    uvicorn vision_system.endpoints.embedding_classifier:app --host 0.0.0.0 --port 8000
+

@@ -5,8 +5,11 @@ description = "Multi-Agent Llama.cpp with CrewAI - HK-47 and Kreia"
 requires-python = ">=3.10"
 dependencies = [
     "crewai>=0.1.0",
+    "fastapi>=0.136.1",
     "langchain-openai>=0.1.0",
+    "openai>=2.32.0",
     "pyyaml>=6.0",
+    "uvicorn>=0.46.0",
 ]
 
 [tool.uv]

@@ -1,5 +1,7 @@
 from openai import OpenAI
 import base64
+from typing import Dict
+from pathlib import Path
 
 
 class GameVisionRouter:
@@ -12,6 +14,8 @@ class GameVisionRouter:
         return self.routes[pred_label]
     
     def image_to_data_url(self, image_path):
+        if isinstance(image_path, str):
+            image_path = Path(image_path)
         suffix = image_path.suffix.lower()
         mime = {
             ".png": "image/png",
@@ -38,7 +42,8 @@ class GameVisionRouter:
 
         image_url = self.image_to_data_url(image_path)
 
-        resp = client.chat.completions.create(
+        # Stream response
+        stream = client.chat.completions.create(
             model=route["model"],
             messages=[
                 {
@@ -49,13 +54,22 @@ class GameVisionRouter:
                     ],
                 }
             ],
-            temperature=0.4,
+            temperature=0.2,
+            stream=True,
         )
+
+        response_text = ""
+        for chunk in stream:
+            # Each chunk has .choices[0].delta with incremental content
+            if chunk.choices and chunk.choices[0].delta and chunk.choices[0].delta.content:
+                for part in chunk.choices[0].delta.content:
+                    response_text += part
+                    yield part
 
         return {
             "pred_label": pred_label,
             "routed_base_url": route["base_url"],
             "routed_model": route["model"],
-            "response_text": resp.choices[0].message.content,
+            "response_text": response_text,
         }
-    
+
