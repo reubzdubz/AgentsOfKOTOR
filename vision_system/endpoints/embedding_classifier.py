@@ -42,6 +42,7 @@ def classify_image(image_bytes: bytes, prompt: str) -> str:
     scores = label_embs @ image_emb
     best_idx = int(np.argmax(scores))
     predicted_label = labels[best_idx]
+    print(f"Predicted label: {predicted_label} (scores: {dict(zip(labels, scores))})")
 
     return predicted_label
 
@@ -66,4 +67,4 @@ async def health():
 
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=8080)
