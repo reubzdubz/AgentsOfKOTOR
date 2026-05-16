@@ -39,15 +39,23 @@ This project sets up two llama.cpp instances running Qwen3.5 0.8B models, person
 Currently an experimental feature, a routing system is used to direct the workflow to the relevant agent. Comparing the success rates of different approaches to classify the game state based on the UI view, as I do not have direct access to the video game's internal state.
 
 1. Edge detection + Feature Extraction + Classifier
-** Have yet to fully test this**
+| Class        | Precision | Recall | F1‑Score | Support |
+|--------------|-----------|--------|----------|---------|
+| Combat       | 0.83      | 0.77   | 0.80     | 31      |
+| Leveling     | 0.94      | 0.97   | 0.95     | 61      |
+| Narrative    | 0.87      | 0.87   | 0.87     | 30      |
+| **Accuracy** |           |        | **0.89** | 122     |
+| Macro Avg    | 0.88      | 0.87   | 0.87     | 122     |
+| Weighted Avg | 0.89      | 0.89   | 0.89     | 122     |
+
 
 2. Image-Caption Similarity via Embedding model
 Using transformer based code for Qwen3-VL-2B embeddings, as multimodal embeddings using llama.cpp server appear to be having some issues
 
-Qwen3-VL Label Similarity Benchmark
-Total images: 474
-Overall accuracy: 87.97%
-Average embedding latency: 0.118s/image
+- Qwen3-VL Label Similarity Benchmark
+- Total images: 474
+- Overall accuracy: 87.97%
+- Average embedding latency: 0.118s/image
 
 | Class | Precision | Recall | F1 Score |
 | :--- | :--- | :--- | :--- |
@@ -57,11 +65,11 @@ Average embedding latency: 0.118s/image
 
 
 3. VLM-based classification
-Utilized Molmo2-4B for classification:
-=== VLM UI Classification Benchmark ===
-Total images: 474
-Overall accuracy: 72.78%
-Average latency: 0.51s/image
+- Utilized Molmo2-4B for classification:
+- === VLM UI Classification Benchmark ===
+- Total images: 474
+- Overall accuracy: 72.78%
+- Average latency: 0.51s/image
 
 | Class | Precision | Recall | F1 Score |
 | :--- | :--- | :--- | :--- |
@@ -74,6 +82,6 @@ Average latency: 0.51s/image
 ## To-do
 
 - Optimize vision data pipeline to collate gameplay footage and log game state into three categories: dialogue, combat and leveling up, which will have their own subagents
-- Compare and determine which approach is best to classify game state based on player view in terms of latency and accuracy
-- Finetune on scrapped dialogue JSONs to instill character behavior (prompt engineering is rather limiting and not versatile)
+- 
+- Finetune LLMs on scrapped dialogue JSONs to instill character behavior (prompt engineering is rather limiting and not versatile)
 - Integrate Elevenlabs TTS API for streaming of voice for LLM responses
