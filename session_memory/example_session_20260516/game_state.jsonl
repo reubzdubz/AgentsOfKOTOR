@@ -1,0 +1,5 @@
+{"timestamp": "2026-05-16T10:23:14.123456", "state": "combat", "confidence_scores": {"combat": 0.92, "main_menu": 0.03, "dialogue": 0.05}, "metadata": {"enemies_visible": 2, "player_health": 75}}
+{"timestamp": "2026-05-16T10:23:19.456789", "state": "combat", "confidence_scores": {"combat": 0.89, "main_menu": 0.02, "dialogue": 0.09}, "metadata": {"enemies_visible": 1, "player_health": 65, "action": "player_attacked"}}
+{"timestamp": "2026-05-16T10:23:24.789012", "state": "dialogue", "confidence_scores": {"dialogue": 0.88, "combat": 0.08, "main_menu": 0.04}, "metadata": {"npc": "Bastila", "dialogue_stage": "post_combat"}}
+{"timestamp": "2026-05-16T10:23:29.012345", "state": "combat", "confidence_scores": {"combat": 0.91, "dialogue": 0.06, "main_menu": 0.03}, "metadata": {"enemies_visible": 3, "player_health": 50}}
+{"timestamp": "2026-05-16T10:23:34.345678", "state": "leveling", "confidence_scores": {"leveling": 0.85, "combat": 0.10, "main_menu": 0.05}, "metadata": {"player_level": 5, "skill_points_available": 2}}

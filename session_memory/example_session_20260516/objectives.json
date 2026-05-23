@@ -1,0 +1,41 @@
+{
+  "current": "Escape the Sith Academy",
+  "progress": 45,
+  "objectives": [
+    {
+      "name": "Defeat Sith enemies in training room",
+      "status": "completed",
+      "reward_exp": 250
+    },
+    {
+      "name": "Speak with Master Yuthura",
+      "status": "in_progress",
+      "reward_exp": 150
+    },
+    {
+      "name": "Acquire Sith armor",
+      "status": "in_progress",
+      "reward_exp": 100
+    }
+  ],
+  "party": [
+    {
+      "name": "Player (Revan)",
+      "level": 5,
+      "health": 50,
+      "status": "active"
+    },
+    {
+      "name": "Bastila",
+      "level": 5,
+      "health": 65,
+      "status": "active"
+    },
+    {
+      "name": "Carth",
+      "level": 4,
+      "health": 45,
+      "status": "resting"
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+[2026-05-16T10:22:45.123456] Bastila: Stay alert. The Sith could be anywhere.
+[2026-05-16T10:22:50.234567] Player: I can handle myself.
+[2026-05-16T10:22:55.345678] Carth: Enemies ahead! Three of them!
+[2026-05-16T10:23:25.456789] Master Yuthura: Well fought, student. Your skills show promise.
+[2026-05-16T10:23:30.567890] Player: What do you want from me?
+[2026-05-16T10:23:35.678901] Master Yuthura: Power. Strength. The Sith way.

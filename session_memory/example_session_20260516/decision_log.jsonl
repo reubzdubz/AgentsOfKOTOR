@@ -1,0 +1,5 @@
+{"timestamp": "2026-05-16T10:23:16.234567", "action": "attack_enemy", "reasoning": "Two enemies engaged, player has 75% health. Aggressive approach selected.", "outcome": "hit_deal_20_damage"}
+{"timestamp": "2026-05-16T10:23:21.567890", "action": "use_force_power", "reasoning": "Enemy health low, used Stun to disable remaining threat.", "outcome": "stun_successful_2_turns"}
+{"timestamp": "2026-05-16T10:23:26.890123", "action": "talk_to_npc", "reasoning": "Dialogue branch detected. Selected dialogue option aligned with light side.", "outcome": "gained_100_exp"}
+{"timestamp": "2026-05-16T10:23:31.123456", "action": "position_for_combat", "reasoning": "Three enemies now visible, repositioned for tactical advantage.", "outcome": "melee_range_reached"}
+{"timestamp": "2026-05-16T10:23:36.456789", "action": "spend_skill_points", "reasoning": "Level gained. Invested in Force Powers and Blaster Rifle skill.", "outcome": "skills_upgraded"}
